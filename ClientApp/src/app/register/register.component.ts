@@ -2,7 +2,7 @@ import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, FormControl, Validators, AbstractControl, ValidatorFn } from '@angular/forms';
 import { AccountService } from '../services/account.service';
 import { Router } from '@angular/router';
-import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
+import { KkmodalboxComponent } from '../common/kkmodalbox.component';
 
 @Component({
   selector: 'app-register',
@@ -20,20 +20,14 @@ export class RegisterComponent implements OnInit {
 
   errorList: string[];
   modalMessage: string;
-
-  modalRef: BsModalRef;
-  @ViewChild('template', { static: false }) modal: TemplateRef<any>;
-
-  test: any[] = [];
+  modalTitle: string;
+  @ViewChild(KkmodalboxComponent, { static: false }) modalbox: KkmodalboxComponent;
 
   constructor(
     private fb: FormBuilder,
     private acct: AccountService,
-    private router: Router,
-    private modalService: BsModalService
+    private router: Router
   ) { }
-
-
 
   ngOnInit() {
 
@@ -42,7 +36,6 @@ export class RegisterComponent implements OnInit {
     this.cpassword = new FormControl('', [Validators.required, this.MustMatch(this.password)]);
     this.email = new FormControl('', [Validators.required, Validators.email]);
     this.errorList = [];
-
 
     this.insertForm = this.fb.group(
       {
@@ -86,10 +79,9 @@ export class RegisterComponent implements OnInit {
       for (let i = 0; i < error.error.value.length; i++) {
         this.errorList.push(error.error.value[i]);
       }
-
-      console.log(error);
       this.modalMessage = 'Your Registration Was Unsuccessful';
-      this.modalRef = this.modalService.show(this.modal);
+      this.modalTitle = 'Error on Registration';
+      this.modalbox.OpenMe();
     });
   }
 
