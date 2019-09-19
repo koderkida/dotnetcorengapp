@@ -47,7 +47,11 @@ export class AccountService {
   }
 
   checkLoginStatus(): boolean {
-    return true;
+    const loginCookie = localStorage.getItem('loginStatus');
+    if (loginCookie === '1') {
+      return true;
+    }
+    return false;
   }
 
   register(username: string, password: string, email: string) {

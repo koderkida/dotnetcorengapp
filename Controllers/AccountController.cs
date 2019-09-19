@@ -134,7 +134,7 @@ namespace GKDOTNETNGAPP.Controllers
 
             // return error
             ModelState.AddModelError("", "Username/Password was not Found");
-            return Unauthorized(new { LoginError = "Please Check the Login Credentials - Ivalid Username/Password was entered" });
+            return Unauthorized(new { LoginError = "Please Check the Login Credentials - Invalid Username/Password was entered" });
 
         }
 
