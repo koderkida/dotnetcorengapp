@@ -8,7 +8,7 @@ import { Router } from '@angular/router';
   providedIn: 'root'
 })
 export class AccountService {
-  private baseUrlLogin: string = "/api/account/login";
+  private baseUrlLogin = '/api/account/login';
 
   private loginStatus = new BehaviorSubject<boolean>(this.checkLoginStatus());
   private UserName = new BehaviorSubject<string>(localStorage.getItem('username'));
@@ -41,6 +41,9 @@ export class AccountService {
     localStorage.removeItem('expiration');
     localStorage.setItem('loginStatus', '0');
     this.router.navigate(['/login']);
-    console.log("Logged Out Successfully");
+    console.log('Logged Out Successfully');
+  }
+  checkLoginStatus(): boolean {
+    return true;
   }
 }
