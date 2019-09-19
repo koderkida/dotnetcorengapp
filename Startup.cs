@@ -13,6 +13,7 @@ using GKDOTNETNGAPP.Helpers;
 using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
+using GKDOTNETNGAPP.Email;
 
 namespace GKDOTNETNGAPP
 {
@@ -30,6 +31,8 @@ namespace GKDOTNETNGAPP
         {
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
+            services.AddSendGridEmailSender();
+            
             // In production, the Angular files will be served from this directory
             services.AddSpaStaticFiles(configuration =>
             {

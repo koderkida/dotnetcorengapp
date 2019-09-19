@@ -72,7 +72,12 @@ export class RegisterComponent implements OnInit {
   onSubmit() {
     const userDetails = this.insertForm.value;
     this.acct.register(userDetails.username, userDetails.password, userDetails.email).subscribe(result => {
-      this.router.navigate(['/login']);
+      // this.router.navigate(['/login']);
+      this.errorList = [];
+      this.modalMessage = 'Your Registration is successful, Please kindly confirm via email';
+      this.modalTitle = 'Registration';
+      this.modalbox.RedirectTo = ['/login'];
+      this.modalbox.OpenMe();
     }, error => {
       this.errorList = [];
       // tslint:disable-next-line:prefer-for-of

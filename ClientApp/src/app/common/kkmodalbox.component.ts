@@ -1,5 +1,6 @@
 import { Component, OnInit, TemplateRef, ViewChild, Input } from '@angular/core';
 import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-kkmodalbox',
@@ -22,10 +23,16 @@ export class KkmodalboxComponent implements OnInit {
   set ModalErrorList(valuearr) {
     this.modalErrorList = valuearr;
   }
+  private redirectto = [];
+  @Input()
+  set RedirectTo(value) {
+    this.redirectto = value;
+  }
   private modalRef: BsModalRef;
   @ViewChild('template', { static: false }) modal: TemplateRef<any>;
 
-  constructor(private modalService: BsModalService) { }
+  constructor(private modalService: BsModalService,
+              private router: Router) { }
 
   ngOnInit() {
     this.modalTitle = '';
@@ -35,6 +42,9 @@ export class KkmodalboxComponent implements OnInit {
 
   CloseMe() {
     this.modalRef.hide();
+    if (this.redirectto) {
+      this.router.navigate(this.redirectto);
+    }
   }
 
   OpenMe() {
