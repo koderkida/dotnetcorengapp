@@ -1,8 +1,10 @@
+
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, Subject, BehaviorSubject } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { Router } from '@angular/router';
+import { KKCommon } from '../utilities/kkcommon';
 
 @Injectable({
   providedIn: 'root'
@@ -18,7 +20,7 @@ export class AccountService {
   constructor(private http: HttpClient, private router: Router) { }
 
   login(username: string, password: string) {
-    return this.http.post<any>(this.baseUrlLogin, { username, password }).pipe(
+    return this.http.post<any>(KKCommon.API_LOGIN, { username, password }).pipe(
       map(result => {
         if (result && result.token) {
           this.loginStatus.next(true);
@@ -55,7 +57,7 @@ export class AccountService {
   }
 
   register(username: string, password: string, email: string) {
-    return this.http.post<any>(this.baseUrlRegister, { username, password, email }).pipe(map(result => {
+    return this.http.post<any>(KKCommon.API_REGISTER, { username, password, email }).pipe(map(result => {
       return result;
     }, error => {
       return error;
