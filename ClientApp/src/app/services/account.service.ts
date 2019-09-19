@@ -52,10 +52,20 @@ export class AccountService {
 
   register(username: string, password: string, email: string) {
     return this.http.post<any>(this.baseUrlRegister, { username, password, email }).pipe(map(result => {
-       return result;
+      return result;
     }, error => {
       return error;
     }));
   }
+  get isLoggesIn() {
+    return this.loginStatus.asObservable();
+  }
 
+  get currentUserName() {
+    return this.UserName.asObservable();
+  }
+
+  get currentUserRole() {
+    return this.UserRole.asObservable();
+  }
 }
