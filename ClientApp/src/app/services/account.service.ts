@@ -9,12 +9,14 @@ import { Router } from '@angular/router';
 })
 export class AccountService {
   private baseUrlLogin = '/api/account/login';
+  private baseUrlRegister = '/api/account/register';
 
   private loginStatus = new BehaviorSubject<boolean>(this.checkLoginStatus());
   private UserName = new BehaviorSubject<string>(localStorage.getItem('username'));
   private UserRole = new BehaviorSubject<string>(localStorage.getItem('userRole'));
 
   constructor(private http: HttpClient, private router: Router) { }
+
   login(username: string, password: string) {
     return this.http.post<any>(this.baseUrlLogin, { username, password }).pipe(
       map(result => {
@@ -43,7 +45,17 @@ export class AccountService {
     this.router.navigate(['/login']);
     console.log('Logged Out Successfully');
   }
+
   checkLoginStatus(): boolean {
     return true;
   }
+
+  register(username: string, password: string, email: string) {
+    return this.http.post<any>(this.baseUrlRegister, { username, password, email }).pipe(map(result => {
+       return result;
+    }, error => {
+      return error;
+    }));
+  }
+
 }
