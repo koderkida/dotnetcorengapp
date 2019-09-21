@@ -13,6 +13,9 @@ export class KkmodalboxComponent implements OnInit {
   set ModalTitle(value) {
     this.modalTitle = value;
   }
+  get ModalTitle(){
+    return this.modalTitle;
+  }
   private modalMessage = '';
   @Input()
   set ModalMessage(value) {
@@ -23,10 +26,16 @@ export class KkmodalboxComponent implements OnInit {
   set ModalErrorList(valuearr) {
     this.modalErrorList = valuearr;
   }
+  get ModalErrorList() {
+    return this.modalErrorList;
+  }
   private redirectto = [];
   @Input()
   set RedirectTo(value) {
     this.redirectto = value;
+  }
+  get RedirectTo() {
+    return this.redirectto;
   }
   private modalRef: BsModalRef;
   @ViewChild('template', { static: false }) modal: TemplateRef<any>;
