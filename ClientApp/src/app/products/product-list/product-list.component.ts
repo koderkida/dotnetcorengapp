@@ -55,11 +55,11 @@ export class ProductListComponent implements OnInit, OnDestroy {
 
 
   constructor(private productservice: ProductService,
-              private modalService: BsModalService,
-              private fb: FormBuilder,
-              private chRef: ChangeDetectorRef,
-              private router: Router,
-              private acct: AccountService) { }
+    private modalService: BsModalService,
+    private fb: FormBuilder,
+    private chRef: ChangeDetectorRef,
+    private router: Router,
+    private acct: AccountService) { }
 
   ngOnInit() {
     this.dtOptions = {
@@ -158,16 +158,55 @@ export class ProductListComponent implements OnInit, OnDestroy {
     });
   }
   onUpdate() {
+    const editProduct = this.updateForm.value;
+    this.productservice.updateProduct(editProduct.id, editProduct).subscribe(
+      result => {
+        console.log('Product Updated');
+        this.productservice.clearCache();
+        this.products$ = this.productservice.getProducts();
+        this.products$.subscribe(updatedlist => {
+          this.products = updatedlist;
 
+          this.modalRef.hide();
+          this.rerender();
+        });
+      },
+      error => console.log('Could Not Update Product')
+    );
   }
   onUpdateModal(productEdit: Product): void {
+    this.lid.setValue(productEdit.productId);
+    this.lname.setValue(productEdit.name);
+    this.lprice.setValue(productEdit.price);
+    this.ldescription.setValue(productEdit.description);
+    this.limageUrl.setValue(productEdit.imageUrl);
 
+    this.updateForm.setValue({
+      id: this.lid.value,
+      name: this.lname.value,
+      price: this.lprice.value,
+      description: this.ldescription.value,
+      imageUrl: this.limageUrl.value,
+      outOfStock: true
+    });
+
+    this.modalRef = this.modalService.show(this.editmodal);
   }
   onDelete(product: Product): void {
+    this.productservice.deleteProduct(product.productId).subscribe(result => {
+      this.productservice.clearCache();
+      this.products$ = this.productservice.getProducts();
+      this.products$.subscribe(newlist => {
+        this.products = newlist;
 
+        this.rerender();
+      });
+    });
   }
   onSelect(product: Product): void {
+    this.selectedProduct = product;
 
+    this.router.navigateByUrl('/products/' + product.productId);
   }
   ngOnDestroy() {
     this.dtTrigger.unsubscribe();
