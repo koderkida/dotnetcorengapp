@@ -31,10 +31,10 @@ export class ProductListComponent implements OnInit, OnDestroy {
 
 
   // Add Modal
-  @ViewChild('template', { static : false }) modal: TemplateRef<any>;
+  @ViewChild('template', { static: false }) modal: TemplateRef<any>;
 
   // Update Modal
-  @ViewChild('editTemplate', { static : false }) editmodal: TemplateRef<any>;
+  @ViewChild('editTemplate', { static: false }) editmodal: TemplateRef<any>;
 
 
   // Modal properties
@@ -50,7 +50,7 @@ export class ProductListComponent implements OnInit, OnDestroy {
   dtOptions: DataTables.Settings = {};
   dtTrigger: Subject<any> = new Subject();
 
-  @ViewChild(DataTableDirective, { static : false }) dtElement: DataTableDirective;
+  @ViewChild(DataTableDirective, { static: false }) dtElement: DataTableDirective;
 
 
 
@@ -67,7 +67,7 @@ export class ProductListComponent implements OnInit, OnDestroy {
       pageLength: 9,
       autoWidth: true,
       order: [[0, 'desc']]
-      };
+    };
 
     this.products$ = this.productservice.getProducts();
 
@@ -123,12 +123,39 @@ export class ProductListComponent implements OnInit, OnDestroy {
       });
   }
   onAddProduct() {
+    this.modalRef = this.modalService.show(this.modal);
   }
   onSubmit() {
+    const newProduct = this.insertForm.value;
 
+    this.productservice.insertProduct(newProduct).subscribe(
+      result => {
+        this.productservice.clearCache();
+        this.products$ = this.productservice.getProducts();
+
+        this.products$.subscribe(newlist => {
+          this.products = newlist;
+          this.modalRef.hide();
+          this.insertForm.reset();
+          this.rerender();
+
+        });
+        console.log('New Product added');
+
+      },
+      error => console.log('Could not add Product')
+
+    );
   }
   rerender() {
+    this.dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
+      // Destroy the table first in the current context
+      dtInstance.destroy();
 
+      // Call the dtTrigger to rerender again
+      this.dtTrigger.next();
+
+    });
   }
   onUpdate() {
 
